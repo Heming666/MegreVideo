@@ -24,12 +24,12 @@ namespace MegreVideo
         {
             var directoryPath = AppDomain.CurrentDomain.BaseDirectory;//程序的根目录
             //存放临时文件的文件夹里不能重名的文件，否则会导致ffmpeg程序卡死，无法执行后面的命令，进程也不会被被结束，需要手动在任务管理器杀进程
-            string tsOne = new Random().Next(0, 1000).ToString() + ".ts";
-            string tstwo = new Random().Next(0, 1000).ToString() + ".ts";
+            string tsOne = Guid.NewGuid().ToString() + ".ts";
+            string tstwo = Guid.NewGuid().ToString() + ".ts";
             //生成临时文件
             string command = $"-i {Path.Combine(directoryPath, "Video\\360p.mp4")} -vcodec copy -acodec copy -vbsf h264_mp4toannexb  {Path.Combine(directoryPath, tsOne)} -y";
-  
-            command += $" -i {Path.Combine(directoryPath, "Video\\360p2.mp4")} -vcodec copy -acodec copy -vbsf h264_mp4toannexb  {Path.Combine(directoryPath, tstwo)} -y";
+            this.Execute(command);
+            command = $" -i {Path.Combine(directoryPath, "Video\\360p2.mp4")} -vcodec copy -acodec copy -vbsf h264_mp4toannexb  {Path.Combine(directoryPath, tstwo)} -y";
             this.Execute(command);
             //合并临时文件并输出新的视频
             string outputFile = Guid.NewGuid().ToString() + ".mp4";
